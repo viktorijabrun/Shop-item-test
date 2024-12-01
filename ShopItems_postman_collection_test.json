@@ -1,0 +1,669 @@
+{
+	"info": {
+		"_postman_id": "86fa934f-88ec-4578-aa35-eb0c1429544d",
+		"name": "ShopItems",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39912256"
+	},
+	"item": [
+		{
+			"name": "Get",
+			"item": [
+				{
+					"name": "Get all item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    pm.expect(response).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"response.forEach((item, index) => {\r",
+									"    pm.test(`Item ${index + 1} has required fields`, function () {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"name\");\r",
+									"        pm.expect(item).to.have.property(\"price\");\r",
+									"        pm.expect(item).to.have.property(\"description\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Check if IDs are numbers\r",
+									"response.forEach((item, index) => {\r",
+									"    pm.test(`Item ${index + 1} ID is a number`, function () {\r",
+									"        pm.expect(item.id).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Check if names are strings\r",
+									"response.forEach((item, index) => {\r",
+									"    pm.test(`Item ${index + 1} name is a string`, function () {\r",
+									"        pm.expect(item.name).to.be.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Check if prices are numeric strings or numbers\r",
+									"response.forEach((item, index) => {\r",
+									"    pm.test(`Item ${index + 1} price is a numeric string or number`, function () {\r",
+									"        pm.expect(item.price).to.match(/^\\d+$/);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Check if descriptions are strings\r",
+									"response.forEach((item, index) => {\r",
+									"    pm.test(`Item ${index + 1} description is a string`, function () {\r",
+									"        pm.expect(item.description).to.be.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Check if price is greater than 0\r",
+									"response.forEach((item, index) => {\r",
+									"    pm.test(`Item ${index + 1} price is greater than 0`, function () {\r",
+									"        let price = parseFloat(item.price);\r",
+									"        pm.expect(price).to.be.above(0);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code (adjust to your expected status code, e.g., 200)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Check if the response has all the required fields\r",
+									"pm.test(\"Response has all required fields\", function () {\r",
+									"    pm.expect(response).to.have.property(\"id\");\r",
+									"    pm.expect(response).to.have.property(\"name\");\r",
+									"    pm.expect(response).to.have.property(\"price\");\r",
+									"    pm.expect(response).to.have.property(\"description\");\r",
+									"});\r",
+									"\r",
+									"// Validate data types\r",
+									"pm.test(\"Data types are correct\", function () {\r",
+									"    pm.expect(response.id).to.be.a(\"number\");\r",
+									"    pm.expect(response.name).to.be.a(\"string\");\r",
+									"    pm.expect(response.price).to.match(/^\\d+$/); // Price is a numeric string\r",
+									"    pm.expect(response.description).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Ensure price is greater than 0\r",
+									"pm.test(\"Price is greater than 0\", function () {\r",
+									"    let price = parseFloat(response.price);\r",
+									"    pm.expect(price).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// Validate specific values (if expected)\r",
+									"pm.test(\"Response values are correct\", function () {\r",
+									"    pm.expect(response.name).to.equal(\"shampoo\");\r",
+									"    pm.expect(response.description).to.equal(\"For damaged hair\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/items/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get item not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code is 404 (or adjust to the actual expected status code)\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/items/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Post item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Check if the response has all the required fields\r",
+									"pm.test(\"Response has all required fields\", function () {\r",
+									"    pm.expect(response).to.have.property(\"id\");\r",
+									"    pm.expect(response).to.have.property(\"name\");\r",
+									"    pm.expect(response).to.have.property(\"price\");\r",
+									"    pm.expect(response).to.have.property(\"description\");\r",
+									"});\r",
+									"\r",
+									"// Validate data types\r",
+									"pm.test(\"Data types are correct\", function () {\r",
+									"    pm.expect(response.id).to.be.a(\"number\");\r",
+									"    pm.expect(response.name).to.be.a(\"string\");\r",
+									"    pm.expect(response.price).to.match(/^\\d+$/); // Price is a numeric string\r",
+									"    pm.expect(response.description).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Ensure price is greater than 0\r",
+									"pm.test(\"Price is greater than 0\", function () {\r",
+									"    let price = parseFloat(response.price);\r",
+									"    pm.expect(price).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// Validate specific values (if expected)\r",
+									"pm.test(\"Response values are correct\", function () {\r",
+									"    pm.expect(response.name).to.equal(\"shampoo\");\r",
+									"    pm.expect(response.description).to.equal(\"No description provided\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"shampoo\",\r\n    \"price\": \"9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post item Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"hair mask\",\r\n    \"price\": \"15\",\r\n    \"description\": \"For damaged hair\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post without description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code (adjust to your expected status code, e.g., 201)\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Check if the response has all the required fields\r",
+									"pm.test(\"Response has all required fields\", function () {\r",
+									"    pm.expect(response).to.have.property(\"id\");\r",
+									"    pm.expect(response).to.have.property(\"name\");\r",
+									"    pm.expect(response).to.have.property(\"price\");\r",
+									"    pm.expect(response).to.have.property(\"description\");\r",
+									"});\r",
+									"\r",
+									"// Validate data types\r",
+									"pm.test(\"Data types are correct\", function () {\r",
+									"    pm.expect(response.id).to.be.a(\"number\");\r",
+									"    pm.expect(response.name).to.be.a(\"string\");\r",
+									"    pm.expect(response.price).to.be.a(\"number\"); // Price is a number in this case\r",
+									"    pm.expect(response.description).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Ensure price is greater than 0\r",
+									"pm.test(\"Price is greater than 0\", function () {\r",
+									"    pm.expect(response.price).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// Validate specific values (if expected)\r",
+									"pm.test(\"Response values are correct\", function () {\r",
+									"    pm.expect(response.id).to.equal(3);\r",
+									"    pm.expect(response.name).to.equal(\"conditioner\");\r",
+									"    pm.expect(response.description).to.equal(\"No description provided\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"conditioner\",\r\n    \"price\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post no name, no price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code (adjust to your expected status code, e.g., 400)\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"// Check if the response has the `message` field\r",
+									"pm.test(\"Response contains 'message' field\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									"\r",
+									"// Validate the message content\r",
+									"pm.test(\"Message content is correct\", function () {\r",
+									"    pm.expect(response.message).to.equal(\"Name and price are required\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"for fine hair\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Put",
+			"item": [
+				{
+					"name": "Update item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code (adjust to your expected status code, e.g., 200)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Check if the response has all the required fields\r",
+									"pm.test(\"Response has all required fields\", function () {\r",
+									"    pm.expect(response).to.have.property(\"id\");\r",
+									"    pm.expect(response).to.have.property(\"name\");\r",
+									"    pm.expect(response).to.have.property(\"price\");\r",
+									"    pm.expect(response).to.have.property(\"description\");\r",
+									"});\r",
+									"\r",
+									"// Validate data types\r",
+									"pm.test(\"Data types are correct\", function () {\r",
+									"    pm.expect(response.id).to.be.a(\"number\");\r",
+									"    pm.expect(response.name).to.be.a(\"string\");\r",
+									"    pm.expect(response.price).to.match(/^\\d+$/); // Price is a numeric string\r",
+									"    pm.expect(response.description).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Ensure price is greater than 0\r",
+									"pm.test(\"Price is greater than 0\", function () {\r",
+									"    let price = parseFloat(response.price);\r",
+									"    pm.expect(price).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// Validate specific values (if expected)\r",
+									"pm.test(\"Response values are correct\", function () {\r",
+									"    pm.expect(response.id).to.equal(1);\r",
+									"    pm.expect(response.name).to.equal(\"shampoo\");\r",
+									"    pm.expect(response.price).to.equal(\"9\");\r",
+									"    pm.expect(response.description).to.equal(\"For damaged hair\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"For damaged hair\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update item not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code (adjust to your expected status code, e.g., 404)\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Check if the response contains the 'message' field\r",
+									"pm.test(\"Response contains 'message' field\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									"\r",
+									"// Validate the content of the message\r",
+									"pm.test(\"Message content is correct\", function () {\r",
+									"    pm.expect(response.message).to.equal(\"Item not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"For damaged hair\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/items/52",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items",
+								"52"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/items/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete item not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check the status code (adjust to your expected status code, e.g., 404)\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"// Check if the response contains the 'message' field\r",
+									"pm.test(\"Response contains 'message' field\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									"\r",
+									"// Validate the content of the message\r",
+									"pm.test(\"Message content is correct\", function () {\r",
+									"    pm.expect(response.message).to.equal(\"Item not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/items/60",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"items",
+								"60"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
